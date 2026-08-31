@@ -99,11 +99,26 @@ date rule below) holding the cards and nothing else:
 The light/dark choice and any half-finished study round are left out on purpose: they
 describe this browser, not the deck.
 
-Import is destructive — it **replaces** the current cards — so it asks for confirmation
-first and only then writes. Anything questionable is refused before the data is touched:
-non-JSON text, a `version` that is not 1, a missing `cards` array, or a file whose entries
-are all unusable. Individual malformed entries inside an otherwise good file are skipped
-and reported. `readCards()` is shared with `loadState()` so "a valid card" is defined once.
+Anything questionable is refused before the data is touched: non-JSON text, a `version`
+that is not 1, a missing `cards` array, or a file whose entries are all unusable.
+Individual malformed entries inside an otherwise good file are skipped and reported.
+`readCards()` is shared with `loadState()` so "a valid card" is defined once.
+
+## The card picker
+
+Both Export and Import go through one `<dialog id="picker">`, driven by the `picker`
+variable in `app.js`. Like `searchText` it is view state and is never saved — a dialog
+that happens to be open has nothing to do with the stored deck.
+
+- **Export** ticks every card by default and writes only the ticked ones.
+- **Import** offers two choices. *All cards* replaces the whole deck (`applyReplaceAll`)
+  and is the only path that deletes anything. *Choose cards* (the default) merges the
+  ticked cards by `id` (`applyMerge`): a card replaces the one it matches and is otherwise
+  added, so nothing the user already had is lost. Each row says which of the two it will
+  do, so the destructive option is never the silent one.
+
+Reading a file never changes the deck: `importFromFile()` validates and then opens the
+picker, and only `confirmPicker()` writes.
 
 ## Derived numbers
 
