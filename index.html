@@ -8,11 +8,19 @@
 </head>
 <body>
   <header class="app-header">
-    <div>
+    <div class="app-title">
       <h1>Flashcards</h1>
       <p class="tagline">Write a question, flip for the answer, keep score.</p>
     </div>
-    <button type="button" id="theme-btn" class="btn btn-quiet theme-btn">Dark mode</button>
+
+    <div class="header-tools">
+      <div id="search-wrap" class="search">
+        <label for="search-input" class="sr-only">Search your cards</label>
+        <input type="search" id="search-input" class="search-input"
+               placeholder="Search questions and answers" autocomplete="off">
+      </div>
+      <button type="button" id="theme-btn" class="btn btn-quiet theme-btn">Dark mode</button>
+    </div>
   </header>
 
   <main>
@@ -50,12 +58,6 @@
           <p class="stats-note">A card counts as learned once it has more right answers than wrong ones.</p>
         </div>
 
-        <div class="search">
-          <label for="search-input">Search</label>
-          <input type="search" id="search-input" class="search-input"
-                 placeholder="Type to filter questions and answers" autocomplete="off">
-        </div>
-
         <p id="deck-empty" class="empty" hidden>
           No cards yet — add your first one above.
         </p>
@@ -63,20 +65,22 @@
         <p id="no-matches" class="empty" hidden></p>
 
         <ul id="card-list" class="card-list"></ul>
-
-        <div class="backup">
-          <h3 class="backup-title">Backup</h3>
-          <p class="backup-hint">
-            Export saves your cards to a JSON file. Importing one replaces the cards you have now.
-          </p>
-          <div class="backup-actions">
-            <button type="button" id="export-btn" class="btn btn-quiet">Export to file</button>
-            <button type="button" id="import-btn" class="btn btn-quiet">Import from file</button>
-          </div>
-          <input type="file" id="import-file" accept="application/json,.json" hidden>
-          <p id="backup-status" class="backup-status" role="status" hidden></p>
-        </div>
       </section>
+    </section>
+
+    <!-- ============ BACKUP (its own section) ============ -->
+    <section id="backup-view" class="panel backup-panel">
+      <h2>Backup</h2>
+      <p class="backup-hint">
+        Export saves the cards you choose to a JSON file. Importing a file lets you pick
+        which of its cards to bring in.
+      </p>
+      <div class="backup-actions">
+        <button type="button" id="export-btn" class="btn btn-quiet">Export to file</button>
+        <button type="button" id="import-btn" class="btn btn-quiet">Import from file</button>
+      </div>
+      <input type="file" id="import-file" accept="application/json,.json" hidden>
+      <p id="backup-status" class="backup-status" role="status" hidden></p>
     </section>
 
     <!-- ============ STUDY VIEW ============ -->
@@ -130,6 +134,49 @@
       </div>
     </section>
   </main>
+
+  <!-- ============ CARD PICKER (export and import) ============ -->
+  <dialog id="picker" class="picker" aria-labelledby="picker-title">
+    <h2 id="picker-title" class="picker-title"></h2>
+    <p id="picker-intro" class="picker-intro"></p>
+
+    <!-- Import only: replace the whole deck, or pick cards one by one. -->
+    <fieldset id="picker-modes" class="picker-modes" hidden>
+      <legend class="sr-only">How much to import</legend>
+
+      <label class="picker-mode">
+        <input type="radio" name="picker-mode" id="mode-all" value="all">
+        <span>
+          <strong>All cards</strong>
+          <span id="mode-all-hint" class="picker-mode-hint"></span>
+        </span>
+      </label>
+
+      <label class="picker-mode">
+        <input type="radio" name="picker-mode" id="mode-some" value="some" checked>
+        <span>
+          <strong>Choose cards</strong>
+          <span id="mode-some-hint" class="picker-mode-hint"></span>
+        </span>
+      </label>
+    </fieldset>
+
+    <div id="picker-all-row" class="picker-all-row">
+      <label class="picker-check">
+        <input type="checkbox" id="picker-select-all">
+        <strong>All cards</strong>
+      </label>
+    </div>
+
+    <ul id="picker-list" class="picker-list"></ul>
+
+    <p id="picker-summary" class="picker-summary" role="status"></p>
+
+    <div class="picker-actions">
+      <button type="button" id="picker-cancel" class="btn btn-quiet">Cancel</button>
+      <button type="button" id="picker-confirm" class="btn btn-primary">Export</button>
+    </div>
+  </dialog>
 
   <script defer src="app.js"></script>
 </body>
