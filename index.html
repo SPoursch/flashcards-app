@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flashcards</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Flashcards</h1>
+    <p class="tagline">Write a question, flip for the answer, keep score.</p>
+  </header>
+
+  <main>
+    <!-- ============ DECK VIEW ============ -->
+    <section id="deck-view" class="view">
+      <form id="add-form" class="panel add-form" novalidate>
+        <h2>Add a card</h2>
+
+        <label for="front-input">Question (front)</label>
+        <textarea id="front-input" rows="2" placeholder="Capital of France?"></textarea>
+
+        <label for="back-input">Answer (back)</label>
+        <textarea id="back-input" rows="2" placeholder="Paris"></textarea>
+
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+
+        <button type="submit" class="btn btn-primary">Add card</button>
+      </form>
+
+      <section class="panel deck">
+        <div class="deck-header">
+          <h2>Your cards <span id="deck-count" class="count"></span></h2>
+          <button type="button" id="study-btn" class="btn btn-primary">Study</button>
+        </div>
+
+        <p id="deck-empty" class="empty" hidden>
+          No cards yet — add your first one above.
+        </p>
+
+        <ul id="card-list" class="card-list"></ul>
+      </section>
+    </section>
+
+    <!-- ============ STUDY VIEW ============ -->
+    <section id="study-view" class="view" hidden>
+      <div class="study-bar">
+        <button type="button" id="exit-btn" class="btn btn-quiet">&larr; Back to cards</button>
+        <p id="study-position" class="position"></p>
+      </div>
+
+      <div id="progress" class="progress-track" role="progressbar"
+           aria-valuemin="0" aria-valuenow="0" aria-valuemax="0"
+           aria-label="Cards answered in this session">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+
+      <p id="study-score" class="score" role="status"></p>
+
+      <button type="button" id="flashcard" class="flashcard" aria-describedby="flip-hint">
+        <span class="flashcard-inner">
+          <span class="face face-front">
+            <span class="face-label">Question</span>
+            <span id="card-front" class="face-text"></span>
+          </span>
+          <span class="face face-back">
+            <span class="face-label">Answer</span>
+            <span id="card-back" class="face-text"></span>
+          </span>
+        </span>
+      </button>
+      <p id="flip-hint" class="hint">Click the card to flip it.</p>
+
+      <div class="actions">
+        <button type="button" id="reveal-btn" class="btn btn-primary">Show answer</button>
+        <div id="grade-actions" class="grade" hidden>
+          <button type="button" id="wrong-btn" class="btn btn-wrong">Got it wrong</button>
+          <button type="button" id="right-btn" class="btn btn-right">Got it right</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SESSION SUMMARY ============ -->
+    <section id="done-view" class="view" hidden>
+      <div class="panel done-panel">
+        <h2>Session complete</h2>
+        <p id="done-score" class="done-score"></p>
+        <p id="done-detail" class="muted"></p>
+        <div class="actions">
+          <button type="button" id="restart-btn" class="btn btn-primary">Study again</button>
+          <button type="button" id="done-back-btn" class="btn btn-quiet">Back to cards</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script defer src="app.js"></script>
+</body>
+</html>

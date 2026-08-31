@@ -1,0 +1,328 @@
+/* ---------- design tokens ---------- */
+
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --surface-2: #f8f9fb;
+  --text: #171a20;
+  --muted: #616874;
+  --border: #e1e5ec;
+  --accent: #3a5ccc;
+  --accent-text: #ffffff;
+  --right: #1a7f52;
+  --wrong: #b4443a;
+  --shadow: 0 1px 2px rgba(20, 24, 35, .06), 0 8px 24px rgba(20, 24, 35, .06);
+  --radius: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161b;
+    --surface: #1c1f26;
+    --surface-2: #23272f;
+    --text: #e9ebf0;
+    --muted: #9aa2b1;
+    --border: #2e333d;
+    --accent: #7f9cff;
+    --accent-text: #10131a;
+    --right: #4bbd84;
+    --wrong: #f08a7f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .3);
+  }
+}
+
+/* ---------- base ---------- */
+
+* { box-sizing: border-box; }
+
+/* Author display rules beat the browser default for [hidden], so restate it. */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  padding: 2rem 1rem 4rem;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+main { max-width: 680px; margin: 0 auto; }
+
+h1, h2 { line-height: 1.25; }
+h1 { margin: 0; font-size: 1.75rem; letter-spacing: -.02em; }
+h2 { margin: 0 0 .25rem; font-size: 1.05rem; }
+
+.app-header {
+  max-width: 680px;
+  margin: 0 auto 1.75rem;
+}
+
+.tagline { margin: .4rem 0 0; color: var(--muted); }
+.muted { color: var(--muted); }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  font: inherit;
+  font-weight: 600;
+  padding: .6rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: filter .15s, background .15s;
+}
+
+.btn:hover { filter: brightness(1.07); }
+.btn:active { transform: translateY(1px); }
+
+.btn:focus-visible,
+.flashcard:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.btn-primary { background: var(--accent); color: var(--accent-text); }
+.btn-right   { background: var(--right);  color: var(--accent-text); }
+.btn-wrong   { background: var(--wrong);  color: var(--accent-text); }
+
+.btn-quiet {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+/* ---------- add form ---------- */
+
+.add-form { display: flex; flex-direction: column; }
+
+.add-form label {
+  margin: .85rem 0 .3rem;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+textarea {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .6rem .7rem;
+  resize: vertical;
+}
+
+.add-form .btn { margin-top: 1rem; align-self: flex-start; }
+
+.form-error {
+  margin: .85rem 0 0;
+  color: var(--wrong);
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+/* ---------- deck list ---------- */
+
+.deck-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: .5rem;
+}
+
+.count { color: var(--muted); font-weight: 400; }
+.empty { color: var(--muted); margin: .5rem 0 0; }
+
+.card-list { list-style: none; margin: 0; padding: 0; }
+
+.card-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: .9rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.card-item:first-child { border-top: 0; }
+
+.card-text { flex: 1; min-width: 0; }
+
+.card-front {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.card-back {
+  margin: .2rem 0 0;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.card-stats {
+  margin: .35rem 0 0;
+  font-size: .8rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.card-stats .tally-right { color: var(--right); font-weight: 600; }
+.card-stats .tally-wrong { color: var(--wrong); font-weight: 600; }
+
+.delete-btn {
+  flex: none;
+  font: inherit;
+  font-size: .85rem;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .3rem .6rem;
+  cursor: pointer;
+}
+
+.delete-btn:hover { color: var(--wrong); border-color: var(--wrong); }
+
+/* ---------- study view ---------- */
+
+.study-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: .75rem;
+}
+
+.position { margin: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.progress-track {
+  height: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transition: width .25s ease;
+}
+
+.score {
+  margin: .75rem 0 1rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.score .tally-right { color: var(--right); font-weight: 600; }
+.score .tally-wrong { color: var(--wrong); font-weight: 600; }
+
+/* the flip card */
+
+.flashcard {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  /* a button does not inherit page text styles on its own */
+  font: inherit;
+  color: var(--text);
+  perspective: 1200px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.flashcard-inner {
+  position: relative;
+  display: block;
+  min-height: 250px;
+  transform-style: preserve-3d;
+  transition: transform .55s cubic-bezier(.4, .1, .2, 1);
+}
+
+.flashcard.is-flipped .flashcard-inner { transform: rotateY(180deg); }
+
+.face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .9rem;
+  padding: 1.75rem;
+  overflow-y: auto;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.face-back { transform: rotateY(180deg); }
+
+.face-label {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.face-text {
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.hint {
+  margin: .75rem 0 1.25rem;
+  text-align: center;
+  font-size: .85rem;
+  color: var(--muted);
+}
+
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; }
+.grade { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+/* ---------- summary ---------- */
+
+.done-panel { text-align: center; padding: 2rem 1.25rem; }
+.done-panel .actions { margin-top: 1.25rem; }
+
+.done-score {
+  margin: .75rem 0 .25rem;
+  font-size: 2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- small screens ---------- */
+
+@media (max-width: 480px) {
+  .actions, .grade { flex-direction: column; }
+  .actions .btn, .grade .btn { width: 100%; }
+  .face-text { font-size: 1.2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flashcard-inner, .progress-fill, .btn { transition: none; }
+}
