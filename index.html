@@ -8,8 +8,11 @@
 </head>
 <body>
   <header class="app-header">
-    <h1>Flashcards</h1>
-    <p class="tagline">Write a question, flip for the answer, keep score.</p>
+    <div>
+      <h1>Flashcards</h1>
+      <p class="tagline">Write a question, flip for the answer, keep score.</p>
+    </div>
+    <button type="button" id="theme-btn" class="btn btn-quiet theme-btn">Dark mode</button>
   </header>
 
   <main>
@@ -31,15 +34,48 @@
 
       <section class="panel deck">
         <div class="deck-header">
-          <h2>Your cards <span id="deck-count" class="count"></span></h2>
+          <h2>Your cards <span id="deck-count" class="count" aria-live="polite"></span></h2>
           <button type="button" id="study-btn" class="btn btn-primary">Study</button>
+        </div>
+
+        <div id="deck-stats" class="stats" aria-live="polite" hidden>
+          <p class="stat">
+            <span id="stat-total" class="stat-value">0</span>
+            <span class="stat-label">cards in total</span>
+          </p>
+          <p class="stat">
+            <span id="stat-learning" class="stat-value">0</span>
+            <span class="stat-label">still being learned</span>
+          </p>
+          <p class="stats-note">A card counts as learned once it has more right answers than wrong ones.</p>
+        </div>
+
+        <div class="search">
+          <label for="search-input">Search</label>
+          <input type="search" id="search-input" class="search-input"
+                 placeholder="Type to filter questions and answers" autocomplete="off">
         </div>
 
         <p id="deck-empty" class="empty" hidden>
           No cards yet — add your first one above.
         </p>
 
+        <p id="no-matches" class="empty" hidden></p>
+
         <ul id="card-list" class="card-list"></ul>
+
+        <div class="backup">
+          <h3 class="backup-title">Backup</h3>
+          <p class="backup-hint">
+            Export saves your cards to a JSON file. Importing one replaces the cards you have now.
+          </p>
+          <div class="backup-actions">
+            <button type="button" id="export-btn" class="btn btn-quiet">Export to file</button>
+            <button type="button" id="import-btn" class="btn btn-quiet">Import from file</button>
+          </div>
+          <input type="file" id="import-file" accept="application/json,.json" hidden>
+          <p id="backup-status" class="backup-status" role="status" hidden></p>
+        </div>
       </section>
     </section>
 

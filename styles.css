@@ -1,6 +1,8 @@
 /* ---------- design tokens ---------- */
 
+/* Light is the base palette. */
 :root {
+  color-scheme: light;
   --bg: #f4f6f9;
   --surface: #ffffff;
   --surface-2: #f8f9fb;
@@ -15,8 +17,14 @@
   --radius: 14px;
 }
 
+/* The dark palette applies in two cases, so it is written twice:
+   1. the browser prefers dark AND the user has not asked for light;
+   2. the user picked dark with the toggle (app.js sets data-theme on <html>),
+      which must win even when the browser prefers light. */
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --bg: #14161b;
     --surface: #1c1f26;
     --surface-2: #23272f;
@@ -29,6 +37,21 @@
     --wrong: #f08a7f;
     --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .3);
   }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #14161b;
+  --surface: #1c1f26;
+  --surface-2: #23272f;
+  --text: #e9ebf0;
+  --muted: #9aa2b1;
+  --border: #2e333d;
+  --accent: #7f9cff;
+  --accent-text: #10131a;
+  --right: #4bbd84;
+  --wrong: #f08a7f;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .3);
 }
 
 /* ---------- base ---------- */
@@ -53,8 +76,19 @@ h1 { margin: 0; font-size: 1.75rem; letter-spacing: -.02em; }
 h2 { margin: 0 0 .25rem; font-size: 1.05rem; }
 
 .app-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
   max-width: 680px;
   margin: 0 auto 1.75rem;
+}
+
+.theme-btn {
+  flex: none;
+  font-size: .85rem;
+  padding: .45rem .8rem;
+  white-space: nowrap;
 }
 
 .tagline { margin: .4rem 0 0; color: var(--muted); }
@@ -144,6 +178,60 @@ textarea {
 .count { color: var(--muted); font-weight: 400; }
 .empty { color: var(--muted); margin: .5rem 0 0; }
 
+/* ---------- deck stats ---------- */
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+  margin: .75rem 0 1rem;
+  padding: .85rem 1rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.stat { margin: 0; display: flex; align-items: baseline; gap: .4rem; }
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label { font-size: .85rem; color: var(--muted); }
+
+.stats-note {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: .78rem;
+  color: var(--muted);
+}
+
+.search { display: flex; flex-direction: column; margin: .25rem 0 1rem; }
+
+.search label {
+  margin-bottom: .3rem;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.search-input {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .5rem .7rem;
+}
+
+.search-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .card-list { list-style: none; margin: 0; padding: 0; }
 
 .card-item {
@@ -193,6 +281,37 @@ textarea {
 }
 
 .delete-btn:hover { color: var(--wrong); border-color: var(--wrong); }
+
+/* ---------- backup (export / import) ---------- */
+
+.backup {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.backup-title {
+  margin: 0;
+  font-size: .95rem;
+}
+
+.backup-hint {
+  margin: .25rem 0 .75rem;
+  font-size: .85rem;
+  color: var(--muted);
+}
+
+.backup-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+
+.backup-status {
+  margin: .8rem 0 0;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--right);
+  overflow-wrap: anywhere;
+}
+
+.backup-status.is-error { color: var(--wrong); }
 
 /* ---------- study view ---------- */
 

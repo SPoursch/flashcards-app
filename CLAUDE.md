@@ -69,9 +69,49 @@ Single key: `flashcards/v1`, holding one JSON object.
       correct: 0,              // times answered right
       wrong: 0                 // times answered wrong
     }
-  ]
+  ],
+  session: null,               // or the study round in progress:
+                               // { order: [id, ...], index, revealed, correct, wrong }
+  theme: null                  // null = follow the browser, or "light" / "dark"
 }
 ```
+
+Saving the `session` is what lets a reload drop the user back on the same card with
+the same score. Saving `theme` is what makes the light/dark choice stick.
+
+The search box is the one piece of state that is deliberately *not* saved: it filters
+the list on screen only, so a reload always shows the whole deck rather than a
+mysteriously filtered one. It lives in the `searchText` variable in `app.js`.
+
+## Export file shape
+
+Export writes a JSON file named `flashcards-YYYY-MM-DD.json` (local date parts, per the
+date rule below) holding the cards and nothing else:
+
+```js
+{
+  version: 1,
+  exportedAt: "2026-08-31T12:00:00.000Z",  // a moment in time, not a day key
+  cards: [ /* same card objects as above */ ]
+}
+```
+
+The light/dark choice and any half-finished study round are left out on purpose: they
+describe this browser, not the deck.
+
+Import is destructive — it **replaces** the current cards — so it asks for confirmation
+first and only then writes. Anything questionable is refused before the data is touched:
+non-JSON text, a `version` that is not 1, a missing `cards` array, or a file whose entries
+are all unusable. Individual malformed entries inside an otherwise good file are skipped
+and reported. `readCards()` is shared with `loadState()` so "a valid card" is defined once.
+
+## Derived numbers
+
+Nothing is stored that can be worked out from the cards themselves. The deck stats are
+counted at render time from `correct` and `wrong`: a card is **learned** once
+`correct > wrong`, and every other card — including a new one with no answers yet — is
+still being learned. If that rule ever changes, change `isLearned()` in `app.js` and the
+note shown under the stats together, so the screen never explains a rule it is not using.
 
 `loadState()` must tolerate a missing key, malformed JSON, and an unknown `version`, and
 fall back to a valid empty state rather than throwing. A broken localStorage value must
